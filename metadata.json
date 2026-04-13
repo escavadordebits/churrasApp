@@ -1,0 +1,5 @@
+{
+  "name": "Gestor de Churrasco",
+  "description": "Aplicativo para organização de churrascos em condomínios, com gestão de participantes, custos, pagamentos e histórico.",
+  "requestFramePermissions": []
+}

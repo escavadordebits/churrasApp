@@ -1,0 +1,101 @@
+{
+  "entities": {
+    "BBQ": {
+      "title": "Churrasco",
+      "description": "Representa um evento de churrasco.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "location": { "type": "string", "description": "Local da churrasqueira" },
+        "address": { "type": "string", "description": "Endereço do condomínio" },
+        "pixKey": { "type": "string", "description": "Chave PIX para recebimento" },
+        "totalCost": { "type": "number", "description": "Custos gerais totais" },
+        "costs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "value": { "type": "number" },
+              "isReservation": { "type": "boolean" }
+            }
+          }
+        },
+        "receipts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "url": { "type": "string" },
+              "description": { "type": "string" },
+              "uploadedAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["planned", "completed", "cancelled"] },
+        "allowGuests": { "type": "boolean", "description": "Se é permitido levar convidados" },
+        "staff": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "role": { "type": "string", "enum": ["Churrasqueiro", "Garçom"] },
+              "phone": { "type": "string" }
+            }
+          }
+        },
+        "itemLimits": {
+          "type": "object",
+          "description": "Limites de quantidade para cada item padrão"
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["date", "location", "address", "pixKey", "totalCost"]
+    },
+    "Participant": {
+      "title": "Participante",
+      "description": "Representa um participante de um churrasco específico.",
+      "type": "object",
+      "properties": {
+        "bbqId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "itemToBring": { "type": "string", "description": "Item selecionado da lista padrão" },
+        "guestCount": { "type": "number", "description": "Quantidade de convidados" },
+        "paid": { "type": "boolean" },
+        "confirmedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["bbqId", "name", "email", "phone"]
+    },
+    "StandardItem": {
+      "title": "Item Padrão",
+      "description": "Itens que podem ser selecionados para levar.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/bbqs/{bbqId}": {
+      "schema": "BBQ",
+      "description": "Coleção de eventos de churrasco"
+    },
+    "/bbqs/{bbqId}/participants/{participantId}": {
+      "schema": "Participant",
+      "description": "Participantes de um churrasco específico"
+    },
+    "/standardItems/{itemId}": {
+      "schema": "StandardItem",
+      "description": "Lista padrão de itens para seleção"
+    }
+  }
+}
